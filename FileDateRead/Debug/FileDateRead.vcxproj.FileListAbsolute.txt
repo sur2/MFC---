@@ -1,0 +1,2 @@
+C:\Users\PYONG\Desktop\MyCode\MFC-File-Date-Read\FileDateRead\Debug\FileDateRead.exe
+C:\Users\PYONG\Desktop\MyCode\MFC-File-Date-Read\FileDateRead\Debug\FileDateRead.pdb

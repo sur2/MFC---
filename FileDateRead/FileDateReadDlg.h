@@ -30,4 +30,19 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	CButton m_btnPath;
+	CEdit m_editPaht;
+	afx_msg void OnClickedBtnPath();
+
+private:
+	void SetEditText();
+	void ReadFile(CString filePath);
+public:
+	CDateTimeCtrl m_dtpMake;
+	CDateTimeCtrl m_dtpMake2;
+	CDateTimeCtrl m_dtpModify;
+	CDateTimeCtrl m_dtpModify2;
+	CDateTimeCtrl m_dtpAccess;
+	CDateTimeCtrl m_dtpAccess2;
 };
