@@ -1,2 +1,5 @@
-﻿  FileDateReadDlg.cpp
+﻿  pch.cpp
+  FileDateRead.cpp
+  FileDateReadDlg.cpp
+  코드를 생성하고 있습니다...
   FileDateRead.vcxproj -> C:\Users\PYONG\Desktop\MyCode\MFC-File-Date-Read\FileDateRead\Debug\FileDateRead.exe

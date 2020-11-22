@@ -136,36 +136,37 @@ void CFileDateReadDlg::ReadFile(CString filePath)
 		// 지정된 파일에서 파일의 생성, 최근 사용 그리고 최근 갱신된 시간을 얻는다.
 		GetFileTime(h_file, &m_ftCreate_time, &m_ftAccess_time, &m_ftWrite_time);
 
-		SYSTEMTIME write_system_time, write_local_time;
 		SYSTEMTIME create_system_time, create_local_time;
+		SYSTEMTIME write_system_time, write_local_time;
 		SYSTEMTIME access_system_time, access_local_time;
 		// FILETIME 구조체정보를 SYSTEMTIME 구조체 정보로 변환한다. FILETIME 구조체에 들어있는 정보는
 		// 우리가 직접적으로 이용하려면 계산이 복잡해지기 때문에 사용하기 편리한 SYSTEMTIME 구조체
 		// 형식으로 변환해서 사용한다.
-		FileTimeToSystemTime(&m_ftWrite_time, &write_system_time);
 		FileTimeToSystemTime(&m_ftCreate_time, &create_system_time);
+		FileTimeToSystemTime(&m_ftWrite_time, &write_system_time);
 		FileTimeToSystemTime(&m_ftAccess_time, &access_system_time);
 
 		// FILETIME 구조체에서 SYSTEMTIME 구조체로 변환되면 시간정보가 UTC(Universal Time Coordinated) 형식의
 		// 시간이기 때문에 탐색기나 기타 프로그램에서 보는 시간과 다르다. 따라서 정확한 시간정보를 얻기 위해서
 		// UTC 형식의 시간을 지역시간으로 변환해야 한다. 아래의 함수는 해당 작업을 하는 함수이다.
-		SystemTimeToTzSpecificLocalTime(NULL, &write_system_time, &write_local_time);
 		SystemTimeToTzSpecificLocalTime(NULL, &create_system_time, &create_local_time);
+		SystemTimeToTzSpecificLocalTime(NULL, &write_system_time, &write_local_time);
 		SystemTimeToTzSpecificLocalTime(NULL, &access_system_time, &access_local_time);
 
 		// write_local_time 을 사용하면 된다.
-		m_dtpMake.SetTime(create_system_time);
-		CTime ctimeMake = (create_system_time.wHour * 3600) + (create_system_time.wMinute * 60) + create_system_time.wSecond;
-		m_dtpMake2.SetTime(&ctimeMake);
+		m_dtpMake.SetTime(create_local_time);
+		//CTime ctimeMake = (create_system_time.wHour * 3600) + (create_system_time.wMinute * 60) + create_system_time.wSecond;
+		m_dtpMake2.SetTime(create_local_time);
 
-		m_dtpModify.SetTime(write_system_time);
-		CTime ctimeModify = (write_system_time.wHour * 3600) + (write_system_time.wMinute * 60) + write_system_time.wSecond;
-		m_dtpModify2.SetTime(&ctimeModify);
+		m_dtpModify.SetTime(write_local_time);
+		//CTime ctimeModify = (write_system_time.wHour * 3600) + (write_system_time.wMinute * 60) + write_system_time.wSecond;
+		m_dtpModify2.SetTime(write_local_time);
 
-		m_dtpAccess.SetTime(access_system_time);
-		CTime ctimeAccess = (access_system_time.wHour * 3600) + (access_system_time.wMinute * 60) + access_system_time.wSecond;
-		m_dtpAccess2.SetTime(&ctimeAccess);
+		m_dtpAccess.SetTime(access_local_time);
+		//CTime ctimeAccess = (access_system_time.wHour * 3600) + (access_system_time.wMinute * 60) + access_system_time.wSecond;
+		m_dtpAccess2.SetTime(access_local_time);
 
+		//UpdateData(TRUE);
 		CloseHandle(h_file);
 	}
 }
@@ -181,13 +182,29 @@ void CFileDateReadDlg::OnBnClickedOk()
 		HANDLE h_file = CreateFile(m_strPath, FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (h_file != INVALID_HANDLE_VALUE)
 		{
-			SYSTEMTIME write_system_time, write_local_time;
-			SYSTEMTIME create_system_time, create_local_time;
-			SYSTEMTIME access_system_time, access_local_time;
+			SYSTEMTIME create_system_time, create_local_time, create_local_time2;
+			SYSTEMTIME write_system_time, write_local_time, write_local_time2;
+			SYSTEMTIME access_system_time, access_local_time, access_local_time2;
 
 			m_dtpMake.GetTime(&create_local_time);
 			m_dtpModify.GetTime(&write_local_time);
 			m_dtpAccess.GetTime(&access_local_time);
+
+			m_dtpMake2.GetTime(&create_local_time2);
+			m_dtpModify2.GetTime(&write_local_time2);
+			m_dtpAccess2.GetTime(&access_local_time2);
+
+			create_local_time.wHour = create_local_time2.wHour;
+			create_local_time.wMinute = create_local_time2.wMinute;
+			create_local_time.wSecond = create_local_time2.wSecond;
+
+			write_local_time.wHour = write_local_time2.wHour;
+			write_local_time.wMinute = write_local_time2.wMinute;
+			write_local_time.wSecond = write_local_time2.wSecond;
+
+			access_local_time.wHour = access_local_time2.wHour;
+			access_local_time.wMinute = access_local_time2.wMinute;
+			access_local_time.wSecond = access_local_time2.wSecond;
 
 			TzSpecificLocalTimeToSystemTime(NULL, &write_local_time, &write_system_time);
 			TzSpecificLocalTimeToSystemTime(NULL, &create_local_time, &create_system_time);
