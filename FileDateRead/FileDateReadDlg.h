@@ -33,16 +33,19 @@ protected:
 public:
 	CButton m_btnPath;
 	CEdit m_editPaht;
-	afx_msg void OnClickedBtnPath();
-
-private:
-	void SetEditText();
-	void ReadFile(CString filePath);
-public:
 	CDateTimeCtrl m_dtpMake;
 	CDateTimeCtrl m_dtpMake2;
 	CDateTimeCtrl m_dtpModify;
 	CDateTimeCtrl m_dtpModify2;
 	CDateTimeCtrl m_dtpAccess;
 	CDateTimeCtrl m_dtpAccess2;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnClickedBtnPath();
+
+private:
+	CString m_strPath;
+	FILETIME m_ftCreate_time, m_ftAccess_time, m_ftWrite_time;
+	void SetEditText();
+	void ReadFile(CString filePath);
+
 };
