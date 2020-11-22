@@ -4,6 +4,7 @@
 - CFileDialog를 DoModal하여 파일의 절대경로를 가져온다.
 - 날짜는 DateTimePicker 도구로 DateTimeCtrl를 인스턴스화하여 년월일과 시분초를 나누어 표시했다.
 - 날짜를 수정하고 확인을 누르면 날짜가 수정되어 저장된다.
+- git clone 또는 https://github.com/sur2/MFC-File-Date-Read/blob/main/FileDateRead.exe 주소로 다운로드 가능
 
 
 
